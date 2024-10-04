@@ -1,11 +1,13 @@
 interface Film {
-  id : number ;
-  title : String ;
-  director : String ;
-  duration : number ;
-  budget?: number ;
-  description?: String ;
-  imageUrl?: String ;
+  id: number;
+  title: string;
+  director: string;
+  duration: number;
+  budget?: number;
+  description?: string;
+  imageUrl?: string;
 }
 
-export type {Film };
+type newFilm = Omit<Film, "id">;
+
+export type { Film, newFilm };
