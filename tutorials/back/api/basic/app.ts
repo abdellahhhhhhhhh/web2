@@ -19,6 +19,6 @@ const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   };
   
   app.use(errorHandler);
-  
+
 
 export default app;
