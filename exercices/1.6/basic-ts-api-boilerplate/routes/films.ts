@@ -2,7 +2,18 @@ import { Router } from "express";
 
 import { Film, newFilm } from "../types";
 
+import { containsOnlyExpectedKeys} from "../utils/validate";
+
 const router = Router();
+
+const expectedKeys = [
+  "title",
+  "director",
+  "duration",
+  "budget",
+  "description",
+  "imageUrl", 
+];
 
 const defaultfilms: Film[] = [
   {
@@ -217,6 +228,79 @@ router.patch("/:id", (req, res) => {
   }
 
   return res.json(film);
+});
+
+// Update a film only if all properties are given or create it if it does not exist and the id is not existant
+router.put("/:id", (req, res) => {
+  const body: unknown = req.body;
+
+  if (
+    !body ||
+    typeof body !== "object" ||
+    !("title" in body) ||
+    !("director" in body) ||
+    !("duration" in body) ||
+    typeof body.title !== "string" ||
+    typeof body.director !== "string" ||
+    typeof body.duration !== "number" ||
+    !body.title.trim() ||
+    !body.director.trim() ||
+    body.duration <= 0 ||
+    ("budget" in body &&
+      (typeof body.budget !== "number" || body.budget <= 0)) ||
+    ("description" in body &&
+      (typeof body.description !== "string" || !body.description.trim())) ||
+    ("imageUrl" in body &&
+      (typeof body.imageUrl !== "string" || !body.imageUrl.trim()))
+  ) {
+    return res.sendStatus(400);
+  }
+
+    // Challenge of ex1.6 : To be complete, we should check that the keys of the body object are only the ones we expect
+    if (!containsOnlyExpectedKeys(body, expectedKeys)) {
+      return res.sendStatus(400);
+    }
+  
+
+  const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    return res.sendStatus(400);
+  }
+
+  const indexOfFilmToUpdate = defaultfilms.findIndex((film) => film.id === id);
+  // Deal with the film creation if it does not exist
+  if (indexOfFilmToUpdate < 0) {
+    const newFilm = body as newFilm;
+
+    // Challenge of ex1.6 : To be complete, check that the film does not already exist
+    const existingFilm = defaultfilms.find(
+      (film) =>
+        film.title.toLowerCase() === newFilm.title.toLowerCase() &&
+        film.director.toLowerCase() === newFilm.director.toLowerCase()
+    );
+
+    if (existingFilm) {
+      return res.sendStatus(409);
+    }
+    // End of challenge
+
+    const nextId =
+      defaultfilms.reduce((acc, film) => (film.id > acc ? film.id : acc), 0) + 1;
+
+    const addedFilm = { id: nextId, ...newFilm };
+
+    defaultfilms.push(addedFilm);
+
+    return res.json(addedFilm);
+  }
+
+  // Update the film
+  const updatedFilm = { ...defaultfilms[indexOfFilmToUpdate], ...body } as Film;
+
+  defaultfilms[indexOfFilmToUpdate] = updatedFilm;
+
+  return res.send(updatedFilm);
 });
 
 
