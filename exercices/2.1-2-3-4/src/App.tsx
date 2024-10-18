@@ -2,41 +2,45 @@ const App = () => {
   const pageTitle = "Informations sur les films dans les cinémas";
 
   const cinema1Name = "UGC DeBrouckère";
-  const cinema1Movie1Title = "Film 1 - DeBrouckère";
-  const cinema1Movie1Director = "Director A";
-  const cinema1Movie2Title = "Film 2 - DeBrouckère";
-  const cinema1Movie2Director = "Director B";
+
+  const movie1 = {
+    title: "HAIKYU-THE DUMPSTER BATTLE",
+    director: "Susumu Mitsunaka",
+  };
+  const movie2 = {
+    title: "GOODBYE JULIA ",
+    director: "Mohamed Kordofani",
+  };
 
   const cinema2Name = "UGC Toison d'Or";
-  const cinema2Movie1Title = "Film 1 - Toison d'Or";
-  const cinema2Movie1Director = "Director C";
-  const cinema2Movie2Title = "Film 2 - Toison d'Or";
-  const cinema2Movie2Director = "Director D";
+  const movie3 = {
+    title: "THE WATCHERS",
+    director: "Ishana Night Shyamalan",
+  };
+  const movie4 = {
+    title: "BAD BOYS: RIDE OR DIE",
+    director: "Adil El Arbi, Bilall Fallah",
+  };
 
   return (
     <div>
-      <PageTitle title={pageTitle} />
+
+      <PageTitle 
+        title={pageTitle} 
+      />
       
-
-      <div>
-        <Cinema 
-          name={cinema1Name}
-          title={cinema1Movie1Title}
-          director={cinema1Movie1Director}
-          title2={cinema1Movie2Title}
-          director2={cinema1Movie2Director}
-        />
-      </div>
-
-      <div>
-        <Cinema2
-         name={cinema2Name}
-         title={cinema2Movie1Title}
-         director={cinema2Movie1Director}
-         title2={cinema2Movie2Title}
-         director2={cinema2Movie2Director}
-         />
-      </div>
+      <Cinema 
+        name={cinema1Name}
+        movie1={movie1}
+        movie2={movie2}
+      />
+      
+      <Cinema 
+        name={cinema2Name}
+        movie1={movie3}
+        movie2={movie4}
+      />
+      
     </div>
   );
 };
@@ -50,46 +54,36 @@ const PageTitle = (props : PageTitleProps)=>{
   );
 }
 
-interface Cinema1NameProps {
-  name : string;
+interface Movie{
   title: string;
   director : string;
-  title2: string;
-  director2: string;
 }
-const Cinema = (props : Cinema1NameProps )=>{
-  return(
-    <>
-    <h2>{props.name}</h2>
-    <ul>
-      <li>
-        <strong>{props.title}</strong> - Réalisateur :{" "}{props.director}
-      </li>
-      <li><strong>{props.title2}</strong>- Réalisateur :{" "}{props.director2}
-      </li>
-    </ul>
-    </>
-  );
+
+interface CinemaProps {
+  name : string;
+  movie1: Movie;
+  movie2: Movie;
 }
-interface Cinema2NameProps{
-  name: string;
-  title:string;
-  director : string;
-  title2: string;
-  director2: string;
-}
-const Cinema2 =  (props : Cinema2NameProps)=>{
+
+const Cinema =  (props : CinemaProps)=>{
   return(
     <>
       <h2>{props.name}</h2>
+      <div>
+        <ul>
 
-      <ul>
-        <li><strong>{props.title}</strong>- Réalisateur :{" "}{props.director}
-        </li>
-        <li><strong>{props.title2}</strong>- Réalisateur :{" "}{props.director2}
-        </li>
-      </ul>
+          <li>
+            <strong>{props.movie1.title}</strong> - Réalisateur :{" "}
+            {props.movie1.director}
+          </li>
 
+          <li>
+            <strong>{props.movie2.title}</strong> - Réalisateur :{" "}
+            {props.movie2.director}
+          </li>
+
+        </ul>
+      </div>
     </>
   )
 }
