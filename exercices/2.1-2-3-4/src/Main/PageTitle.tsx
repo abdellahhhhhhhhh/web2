@@ -1,10 +1,9 @@
-
 interface PageTitleProps {
-    title : string ;
+    title: string;
   }
-  const PageTitle = (props : PageTitleProps)=>{
-    return (
-        <h1>{props.title}</h1>
-    );
-  }
-export default PageTitle;
+  
+  const PageTitle = (props: PageTitleProps) => {
+    return <h1>{props.title}</h1>;
+  };
+  
+  export default PageTitle;
