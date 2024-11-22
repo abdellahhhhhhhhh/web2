@@ -18,6 +18,7 @@ function App() {
       <ClickCounter
         title='CLICKS AFOU'
         message='You are a master in the art of clicking !'
+        messageMouse='Please click on me now !'
       />
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
